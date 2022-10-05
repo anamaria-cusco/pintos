@@ -130,6 +130,8 @@ main (void)
 #endif
 
   printf ("Boot complete.\n");
+  printf("This is my first line of code in Pintos!\n");
+  myfunction();
   
   /* Run actions specified on kernel command line. */
   run_actions (argv);
