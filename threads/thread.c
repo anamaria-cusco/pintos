@@ -136,7 +136,10 @@ void thread_tick(void)
 
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
+  {
     intr_yield_on_return();
+    printf("%s %d: Thread YIELD ON RETURN\n", __FUNCTION__, __LINE__);
+  }
 }
 
 /* Prints thread statistics. */
@@ -312,6 +315,7 @@ void thread_yield(void)
   ASSERT(!intr_context());
 
   old_level = intr_disable();
+  printf("%s %d: Thread YIELD\n", __FUNCTION__, __LINE__);
   if (cur != idle_thread)
     list_push_back(&ready_list, &cur->elem);
   cur->status = THREAD_READY;
@@ -566,6 +570,16 @@ schedule(void)
   struct thread *cur = running_thread();
   struct thread *next = next_thread_to_run();
   struct thread *prev = NULL;
+  /*
+    printf("---Before context switch---\n");
+    printf("Previous: ");
+    print_thread_info(prev);
+    printf("Current: ");
+    print_thread_info(cur);
+    printf("Next: ");
+    print_thread_info(next);
+    printf("---------------------------\n");
+  */
 
   ASSERT(intr_get_level() == INTR_OFF);
   ASSERT(cur->status != THREAD_RUNNING);
@@ -574,6 +588,16 @@ schedule(void)
   if (cur != next)
     prev = switch_threads(cur, next);
   thread_schedule_tail(prev);
+  /*
+    printf("---After context switch---\n");
+    printf("Previous: ");
+    print_thread_info(prev);
+    printf("Current: ");
+    print_thread_info(cur);
+    printf("Next: ");
+    print_thread_info(next);
+    printf("---------------------------\n");
+  */
 }
 
 /* Returns a tid to use for a new thread. */
