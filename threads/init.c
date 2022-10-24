@@ -78,7 +78,7 @@ int
 main (void)
 {
   char **argv;
-
+  printf("Hei from pintos");
   /* Clear BSS. */  
   bss_init ();
 
