@@ -1,1 +1,1 @@
-void myfunction();
+void myfunction(void);
