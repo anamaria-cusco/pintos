@@ -139,6 +139,7 @@ void thread_set_nice(int);
 int thread_get_recent_cpu(void);
 int thread_get_load_avg(void);
 
+void thread_foreach_ready(thread_action_func *func, void *aux);
 const char *get_thread_status(enum thread_status status);
 void print_thread_info(struct thread *the_thread);
 #endif /* threads/thread.h */

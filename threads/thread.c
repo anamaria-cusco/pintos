@@ -319,6 +319,21 @@ void thread_yield(void)
   intr_set_level(old_level);
 }
 
+/* Invoke function 'func' on ready threads, passing along 'aux'.
+   This function must be called with interrupts off. */
+void thread_foreach_ready(thread_action_func *func, void *aux)
+{
+  ASSERT(intr_get_level() == INTR_OFF);
+  struct list_elem *e;
+
+  for (e = list_begin(&ready_list); e != list_end(&ready_list);
+       e = list_next(e))
+  {
+    struct thread *t = list_entry(e, struct thread, elem);
+    func(t, aux);
+  }
+}
+
 /* Invoke function 'func' on all threads, passing along 'aux'.
    This function must be called with interrupts off. */
 void thread_foreach(thread_action_func *func, void *aux)
